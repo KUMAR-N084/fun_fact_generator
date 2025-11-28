@@ -3,48 +3,701 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Fun Facts</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        #fact {
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: #333;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-    </style>
+    <title>Living Organisms Facts</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Cat Fun Facts</h1>
-    <button onclick="displayFact()">Show a Fun Fact</button>
-    <div id="fact"></div>
+    <div class="wrap">
+        <div class="card">
+            <div class="header">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div id="animalIcon" class="icon-circle" aria-hidden="true">
+                        <!-- icon populated by JS -->
+                    </div>
+                    <div>
+                        <h1>Living Organisms Facts</h1>
+                        <p class="lead">Discover facts about all living organisms — animals, plants, bacteria, fungi & more!</p>
+                    </div>
+                </div>
+                <div class="controls">
+                    <label for="animal" style="display:none">Choose animal</label>
+                    <select id="animal" aria-label="Choose organism or category">
+                        <optgroup label="Mammals (13)">
+                            <option value="cats">Cats</option>
+                            <option value="dogs">Dogs</option>
+                            <option value="lion">Lion</option>
+                            <option value="tiger">Tiger</option>
+                            <option value="elephant">Elephant</option>
+                            <option value="giraffe">Giraffe</option>
+                            <option value="rabbit">Rabbit</option>
+                            <option value="mouse">Mouse</option>
+                            <option value="whale">Whale</option>
+                            <option value="dolphin">Dolphin</option>
+                            <option value="zebra">Zebra</option>
+                            <option value="bear">Bear</option>
+                            <option value="monkey">Monkey</option>
+                        </optgroup>
+                        <optgroup label="Birds (11)">
+                            <option value="birds">Birds (General)</option>
+                            <option value="eagle">Eagle</option>
+                            <option value="sparrow">Sparrow</option>
+                            <option value="peacock">Peacock</option>
+                            <option value="vulture">Vulture</option>
+                            <option value="penguin">Penguin</option>
+                            <option value="owl">Owl</option>
+                            <option value="hummingbird">Hummingbird</option>
+                            <option value="parrot">Parrot</option>
+                        </optgroup>
+                        <optgroup label="Reptiles & Amphibians (4)">
+                            <option value="frog">Frog</option>
+                            <option value="crocodile">Crocodile</option>
+                            <option value="snake">Snake</option>
+                            <option value="lizard">Lizard</option>
+                        </optgroup>
+                        <optgroup label="Aquatic (8)">
+                            <option value="fish">Fish</option>
+                            <option value="shark">Shark</option>
+                            <option value="octopus">Octopus</option>
+                            <option value="jellyfish">Jellyfish</option>
+                            <option value="starfish">Starfish</option>
+                            <option value="crab">Crab</option>
+                            <option value="seahorse">Seahorse</option>
+                        </optgroup>
+                        <optgroup label="Insects (6)">
+                            <option value="butterfly">Butterfly</option>
+                            <option value="bee">Bee</option>
+                            <option value="ant">Ant</option>
+                            <option value="beetle">Beetle</option>
+                            <option value="grasshopper">Grasshopper</option>
+                            <option value="dragonfly">Dragonfly</option>
+                        </optgroup>
+                        <optgroup label="Plants (6)">
+                            <option value="roses">Roses</option>
+                            <option value="trees">Trees</option>
+                            <option value="cacti">Cacti</option>
+                            <option value="sunflower">Sunflower</option>
+                            <option value="orchid">Orchid</option>
+                            <option value="oak">Oak</option>
+                        </optgroup>
+                        <optgroup label="Microorganisms (5)">
+                            <option value="mushrooms">Mushrooms</option>
+                            <option value="bacteria">Bacteria</option>
+                            <option value="viruses">Viruses</option>
+                            <option value="algae">Algae</option>
+                            <option value="yeast">Yeast</option>
+                        </optgroup>
+                        <optgroup label="Fun">
+                            <option value="jokes">Jokes (funny)</option>
+                        </optgroup>
+                    </select>
+                    <button id="showBtn" class="ghost">Show</button>
+                    <button id="toggleLoop" class="btn">Start Loop</button>
+                    <button id="generateBtn" class="ghost">🤖 Generate</button>
+                    <button id="exitBtn" class="ghost">Exit</button>
+                </div>
+            </div>
 
-    <script>
-        const facts = [
-            "Cats have five toes on their front paws, but only four toes on their back paws.",
-            "A group of cats is called a clowder.",
-            "Cats can rotate their ears 180 degrees.",
-            "The world's largest cat measured 48.5 inches long.",
-            "Cats sleep for 70% of their lives.",
-            "A cat's nose is as unique as a human's fingerprint.",
-            "Cats have whiskers on the backs of their front legs.",
-            "A cat can jump up to six times its length.",
-            "The oldest recorded cat lived to be 38 years old.",
-            "Cats have a special reflective layer behind their retinas called the tapetum lucidum, which helps them see in the dark."
-        ];
+            <div class="fact-wrap">
+                <div class="fact-media">
+                    <div id="factImage" class="fact-image" aria-hidden="true">
+                        <!-- image for current fact -->
+                    </div>
+                    <div id="factText" class="fact">Welcome — pick an animal and click <strong>Show</strong> or <strong>Start Loop</strong>.</div>
+                </div>
+            </div>
 
-        function displayFact() {
-            const randomIndex = Math.floor(Math.random() * facts.length);
-            document.getElementById('fact').innerText = facts[randomIndex];
+            <div class="footer">
+                <div class="small">Tip: Use <kbd>Show</kbd> for one-off facts or jokes.</div>
+                <div class="small">Loop interval: <span id="intervalLabel">3</span>s</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+                "Cats have five toes on their front paws, but only four toes on their back paws.",
+                "A group of cats is called a clowder.",
+                "Cats can rotate their ears 180 degrees.",
+                "Cats sleep for about 70% of their lives.",
+                "A cat's nose is as unique as a human's fingerprint.",
+                "Cats have whiskers on the backs of their front legs.",
+                "A cat can jump up to six times its length.",
+                "Some cats are polydactyl — born with extra toes.",
+                "Cats have a 'third eyelid' that helps keep their eyes moist and protected.",
+                "A cat's purr vibrates at a frequency that may help heal bones and muscles."
+            ],
+            dogs: [
+                "Dogs' sense of smell is about 10,000 to 100,000 times more sensitive than humans'.",
+                "A dog's nose print is unique and can be used to identify them.",
+                "Dogs can learn more than 1000 words in some cases.",
+                "A Greyhound could beat a Cheetah in a long-distance race — they have incredible endurance.",
+                "Dogs curl up to protect their organs and keep warm.",
+                "Dachshunds were bred to scent, chase and flush out badgers.",
+                "Dogs have a third eyelid called the nictitating membrane.",
+                "A dog's sense of hearing is four times better than a human's.",
+                "Puppies are born with their eyes and ears closed.",
+                "Dogs sweat through the pads on their feet."
+            ],
+            birds: [
+                "The smallest bird is the bee hummingbird, about 2.25 inches long.",
+                "Some birds, like the Arctic tern, migrate thousands of miles each year.",
+                "Owls can rotate their heads up to 270 degrees.",
+                "Parrots can mimic human speech by imitating the sound patterns.",
+                "Pigeons can recognize themselves in a mirror in some studies.",
+                "A bird's vision is four times sharper than human vision.",
+                "Hummingbirds beat their wings about 80 times per second.",
+                "Crows are so intelligent they can recognize individual human faces.",
+                "Swiftlets use echolocation in dark caves, similar to bats.",
+                "A penguin's feathers are so densely packed they provide insulation better than fur."
+            ],
+            lion: [
+                "A lion's roar can be heard up to 5 miles away.",
+                "Lions live in social groups called prides.",
+                "Male lions have manes which may protect their necks during fights.",
+                "Lions are the only cats that live in groups.",
+                "Lionesses do most of the hunting in a pride.",
+                "A lion's mane color darkens as it ages and grows stronger.",
+                "Lions sleep up to 20 hours a day!",
+                "Male lions spend much of their time protecting pride territory.",
+                "Lions have retractable claws that can grow up to 2 inches long.",
+                "A lion's bite force is about 650 PSI — one of the strongest of all big cats."
+            ],
+            tiger: [
+                "Tigers have striped skin as well as striped fur — no two tigers have the same stripes.",
+                "A tiger's roar can be heard up to 2 miles away.",
+                "Tigers are the largest cat species and strong swimmers.",
+                "They use scent markings and scratch marks to define territory.",
+                "Tigers are mostly solitary animals, unlike lions.",
+                "A tiger can eat up to 88 pounds of meat in a single sitting.",
+                "Tigers have a white spot on the back of each ear that looks like eyes.",
+                "Tigers can leap up to 30 feet in a single bound.",
+                "Each tiger's stripe pattern is unique, like a human fingerprint.",
+                "Tigers can turn their ears up to 180 degrees to locate sounds."
+            ],
+            hyena: [
+                "Spotted hyenas have complex social hierarchies and live in clans.",
+                "Hyenas can digest bone and have one of the strongest bites of land mammals.",
+                "Female spotted hyenas are larger and more dominant than males.",
+                "Hyenas' laughter-like sound is actually a greeting or sign of excitement.",
+                "A hyena's bite force can reach 1,100 PSI — crushing even large bones.",
+                "Hyenas have a pouch-like structure to store excess food.",
+                "Hyenas have a complex social system with strict hierarchies.",
+                "Hyenas' stomach acid is strong enough to dissolve bone.",
+                "Hyenas are highly intelligent and have been observed using tools.",
+                "Young hyenas form lifelong bonds with their littermates."
+            ],
+            elephant: [
+                "Elephants are the largest land animals and have highly developed brains.",
+                "They use their trunks for breathing, grasping, and producing sounds.",
+                "Elephants show signs of self-awareness and mourning behaviors.",
+                "Their tusks are modified incisors that continue to grow.",
+                "Elephants can drink up to 40 gallons of water per day.",
+                "An elephant's trunk has over 40,000 muscles and is incredibly sensitive.",
+                "Elephants have excellent long-term memory and never forget.",
+                "Elephants communicate using infrasound below human hearing range.",
+                "Elephants are one of the few animals that recognize themselves in mirrors.",
+                "Baby elephants suck their trunks like human babies suck thumbs."
+            ],
+            vulture: [
+                "Vultures are scavengers and play a critical role cleaning up carcasses.",
+                "Some vultures have highly acidic stomachs to digest rotting meat safely.",
+                "Vultures use thermals to soar and cover long distances with little effort.",
+                "Vultures have bald heads to prevent food from getting stuck in feathers.",
+                "Vultures can fly up to 6,000 feet high and spot carrion from miles away.",
+                "Vultures can go weeks without food after a large meal.",
+                "A group of vultures is called a 'kettle' or 'volt'.",
+                "Vultures vomit as a defense mechanism when threatened.",
+                "Vultures have incredible eyesight — about 8 times better than humans.",
+                "Vultures are found on every continent except Antarctica."
+            ],
+            eagle: [
+                "Eagles have excellent eyesight — several times better than humans'.",
+                "Some eagle species build enormous nests that are reused for years.",
+                "Eagles are apex predators in their ecosystems.",
+                "An eagle's grip strength is about 10 times stronger than a human's hand grip.",
+                "Bald eagle nests can weigh over 1,000 pounds.",
+                "Eagles can spot a rabbit from 3,280 feet away.",
+                "Eagles can reach speeds of over 100 mph during a dive.",
+                "An eagle's eye can move independently in different directions.",
+                "Eagle pairs often stay together for life and return to the same nest yearly.",
+                "Eagles have been known to live over 40 years in the wild."
+            ],
+            sparrow: [
+                "Sparrows are small, social birds often found near human habitation.",
+                "House sparrows can form large flocks and show flexible diets.",
+                "They build nests from grass, feathers, and other soft materials.",
+                "Sparrows have been observed using tools to crack seeds.",
+                "A sparrow's heart beats about 800 times per minute.",
+                "Sparrows can remember the location of hundreds of food sources.",
+                "Male sparrows sing to attract mates and defend territory.",
+                "Sparrows take dust baths to keep their feathers clean and waterproof.",
+                "Sparrows can fly at speeds up to 30 mph.",
+                "Baby sparrows leave the nest just 10 days after hatching."
+            ],
+            peacock: [
+                "Male peacocks display colorful tail feathers to attract mates.",
+                "A peacock's tail can have hundreds of eye-like markings called ocelli.",
+                "Peafowl are native to South Asia but introduced elsewhere.",
+                "Peacock tails have over 200 feathers and can span 6 feet wide.",
+                "Peacocks make a loud 'meow' sound similar to cats.",
+                "A peacock's train (tail) weighs more than its entire body.",
+                "Peacocks drag their trains through water to clean them.",
+                "Male peacocks strut and vibrate their trains to attract females.",
+                "Peahens (female peacocks) are dull in color to blend in during nesting.",
+                "Peacocks can run up to 10 mph despite their heavy tails."
+            ],
+            fish: [
+                "Fish breathe using gills which extract oxygen from water.",
+                "There are over 30,000 known species of fish.",
+                "Some fish, like the clownfish, have symbiotic relationships with other animals.",
+                "Fish have a keen sense of taste with taste buds on their bodies.",
+                "Some fish can see ultraviolet light that humans cannot.",
+                "Fish communicate through color changes and vibrations.",
+                "Goldfish have a memory span of about 3 seconds (a common myth).",
+                "Some fish produce their own light through bioluminescence.",
+                "Fish don't have eyelids and cannot close their eyes.",
+                "A group of fish swimming together is called a 'school' or 'shoal'."
+            ],
+            shark: [
+                "Sharks have existed for over 400 million years, before dinosaurs.",
+                "Many shark species can detect electric fields produced by other animals.",
+                "Not all sharks are large — the smallest can be less than 8 inches long.",
+                "Sharks have multiple rows of teeth that grow back throughout their lives.",
+                "Some sharks can swim backwards to clean their gills.",
+                "Sharks lack a swim bladder and must keep moving to avoid sinking.",
+                "A shark's skeleton is made of cartilage, not bone.",
+                "Sharks can sense a drop of blood from miles away.",
+                "Great white sharks can live up to 70 years.",
+                "Sharks have been around longer than dinosaurs and trees."
+            ],
+            whale: [
+                "Whales are marine mammals—some migrate thousands of miles annually.",
+                "The blue whale is the largest animal ever known to have lived.",
+                "Many whales use complex vocalizations (songs) for communication.",
+                "A blue whale's heart weighs about 400 pounds.",
+                "Whales breathe through a blowhole, not gills.",
+                "Humpback whales have the longest migration of any mammal.",
+                "Whales are known to care for sick or injured pod members.",
+                "Sperm whales can dive deeper than 6,500 feet.",
+                "Beluga whales are called 'canaries of the sea' for their vocalizations.",
+                "Whales nurse their young with milk, not all eat fish."
+            ],
+            dolphin: [
+                "Dolphins are highly social and use echolocation to find prey.",
+                "Some dolphins display problem-solving skills and playful behavior.",
+                "They live in groups called pods and often cooperate when hunting.",
+                "Dolphins sleep with only half their brain at a time.",
+                "Dolphins have names for each other (unique whistle patterns).",
+                "Dolphins can recognize themselves in mirrors.",
+                "A dolphin's brain is proportionally larger than a human's.",
+                "Dolphins use tools to hunt and have been observed using sea sponges.",
+                "Dolphins are known to help humans in distress.",
+                "Dolphins play games and toys with one another for enjoyment."
+            ],
+            frog: [
+                "Frogs absorb water through their skin and many start life in water as tadpoles.",
+                "Some frogs have powerful toxin defenses; others are harmless.",
+                "Frog calls are used by males to attract females and mark territory.",
+                "Frogs have been around for over 265 million years.",
+                "A frog's eyes help push food down into its stomach.",
+                "Some frogs can freeze solid and thaw out in spring.",
+                "Poison dart frogs can be lethal to predators but harmless in captivity.",
+                "Frogs shed their skin about once a week and eat it.",
+                "A frog's tongue is attached at the front of its mouth.",
+                "Frogs can jump 20 times their body length."
+            ],
+            crocodile: [
+                "Crocodiles have been around for over 200 million years and are skilled ambush predators.",
+                "They can hold their breath underwater for long periods and have a powerful bite.",
+                "Crocodiles build nests and exhibit parental care for their young.",
+                "A crocodile's bite force is about 3,700 PSI — the strongest of all animals.",
+                "Crocodiles cry actual tears when they eat, not from sadness.",
+                "Crocodiles have a valve in their throat that lets them breathe while eating underwater.",
+                "Crocodiles can live over 70 years in the wild.",
+                "A crocodile's teeth are constantly replaced throughout its life.",
+                "Crocodiles are mostly silent but produce low-frequency sounds called infrasound.",
+                "Crocodiles have been observed playing with objects and each other."
+            ],
+            giraffe: [
+                "Giraffes are the tallest land animals, with long necks adapted for browsing treetops.",
+                "A giraffe's tongue can be up to 20 inches long and is prehensile.",
+                "They have unique spot patterns used like fingerprints.",
+                "A giraffe's heart weighs about 25 pounds.",
+                "Baby giraffes (calves) drop 6 feet to the ground when born.",
+                "Giraffes have no vocal cords and are mostly silent animals.",
+                "A giraffe's spots darken as it ages.",
+                "Giraffes can run up to 35 mph in short bursts.",
+                "Giraffes sleep only about 30 minutes a day, often in short intervals.",
+                "A giraffe's long tail ends in a tuft of hair used to swat flies."
+            ],
+            rabbit: [
+                "Rabbits have strong hind legs for rapid running and leaping.",
+                "They are social and often live in groups in warrens.",
+                "Rabbits' teeth grow continuously and need to be worn down by chewing.",
+                "Rabbits can reach speeds of up to 35 mph when fleeing predators.",
+                "Rabbits have nearly 360-degree vision to spot predators.",
+                "A rabbit's ears help regulate its body temperature.",
+                "Rabbits purr when they are content, similar to cats.",
+                "Baby rabbits are called 'kittens' or 'kits'.",
+                "Rabbits practice a behavior called 'binky' — jumping and twisting mid-air.",
+                "Rabbits communicate through foot stomps and other body language."
+            ],
+            mouse: [
+                "Mice are highly adaptable and can thrive in many environments.",
+                "They have strong reproductive rates — a female mouse can produce many litters a year.",
+                "Mice use whiskers to sense their environment in the dark.",
+                "A mouse's tail is as long as its body.",
+                "Mice can jump up to 10 times their body length.",
+                "Mice have excellent hearing and can hear sounds up to 100 kHz.",
+                "Mice can squeeze through holes as small as a dime.",
+                "Mice leave scent marks to navigate and communicate.",
+                "A mouse's eyes are positioned on the sides for a wide field of view.",
+                "Mice can run up to 8 mph in short bursts."
+            ]
+            ,
+            jokes: [
+                "Why don't scientists trust atoms? Because they make up everything!",
+                "I told my computer I needed a break, and it said 'No problem — I'll go to sleep.'",
+                "Why did the scarecrow win an award? Because he was outstanding in his field.",
+                "I asked the librarian if the library had books on paranoia — she whispered, 'They're right behind you.'",
+                "What do you call fake spaghetti? An impasta!",
+                "Why do seagulls fly over the sea? Because if they flew over the bay, they'd be bagels!",
+                "Why did the bicycle fall over? Because it was two-tired.",
+                "What do you call cheese that isn't yours? Nacho cheese.",
+                "Why don't eggs tell jokes? They'd crack each other up.",
+                "How does the ocean say hello? It waves.",
+                "Why did the tomato blush? Because it saw the salad dressing.",
+                "Why did the math book look sad? It had too many problems.",
+                "What do you call a bear with no teeth? A gummy bear.",
+                "Why did the golfer bring two pairs of pants? In case he got a hole in one.",
+                "How do you organize a space party? You planet.",
+                "Why was the computer cold? It left its Windows open.",
+                "What do you call an alligator in a vest? An investigator.",
+                "Why did the cookie go to the hospital? Because it felt crummy.",
+                "Why are ghosts bad at lying? Because you can see right through them.",
+                "What did one wall say to the other? I'll meet you at the corner."
+            ]
+        };
+
+        const icons = {
+            cats: `
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3c-1.5 0-3 .5-4 1.5C6.2 6 5 8 5 10.5 5 14 8 16 12 16s7-2 7-5.5c0-2.5-1.2-4.5-3-5.99C15 3.5 13.5 3 12 3z" fill="#ffd166"/>
+                    <path d="M8 14s.5 2 4 2 4-2 4-2" stroke="#073b4c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            `,
+            dogs: `
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 8c-1-1.5-2.5-2-4-1.5v6c1.5.5 3 0 4-1.5V8z" fill="#f4a261"/>
+                    <path d="M17 8c1-1.5 2.5-2 4-1.5v6c-1.5.5-3 0-4-1.5V8z" fill="#f4a261"/>
+                    <path d="M12 4c-2 0-4 1.5-4 4v5c0 2 2 3 4 3s4-1 4-3V8c0-2.5-2-4-4-4z" fill="#ffd6a5" stroke="#073b4c" stroke-width="0.8"/>
+                </svg>
+            `,
+            birds: `
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 14c2-2 5-3 8-3s6 1 8 3c0 0-1.5 4-8 4S4 14 4 14z" fill="#bde0fe"/>
+                    <path d="M13 7c0-1.5-1.2-3-3-3s-3 1-3 3c0 0 1 1 3 1s3-1 3-1z" fill="#60a5fa"/>
+                </svg>
+            `
+        ,
+            lion: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="30" r="12" fill="#f4a261"/>
+                    <path d="M12 30c4-10 24-18 40-6-6-2-12 0-16 4-6-4-12-2-24 2z" fill="#e76f51" opacity="0.9"/>
+                </svg>
+            `,
+            tiger: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="32" r="14" fill="#ffd166"/>
+                    <path d="M20 22c4 2 6 0 10 0s6 2 10 0" stroke="#073b4c" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M16 36c4-2 8 0 16 0s12-2 16 0" stroke="#073b4c" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+            `,
+            hyena: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="8" y="20" width="48" height="28" rx="10" fill="#b5838d"/>
+                    <circle cx="20" cy="30" r="4" fill="#6b4c3b"/>
+                </svg>
+            `,
+            elephant: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="8" y="20" width="48" height="22" rx="6" fill="#a8dadc"/>
+                    <path d="M16 30c0 8 6 12 16 12s16-4 16-12" fill="#74c0c0"/>
+                </svg>
+            `,
+            vulture: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 36c14-8 28-8 48 0-10-8-24-6-36 0-6-2-8 0-12 0z" fill="#9ca3af"/>
+                </svg>
+            `,
+            eagle: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 36c10-10 28-10 40 0-8-6-22-6-40 0z" fill="#fde68a"/>
+                    <path d="M40 28c4 2 6 6 8 8" stroke="#073b4c" stroke-width="1.2"/>
+                </svg>
+            `,
+            sparrow: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="28" cy="32" r="8" fill="#fecaca"/>
+                    <path d="M36 30c6-2 10 2 14 6" stroke="#7c3aed" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+            `,
+            peacock: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="40" r="6" fill="#60a5fa"/>
+                    <path d="M22 30c6-10 20-12 28 0" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+            `,
+            fish: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="32" cy="32" rx="18" ry="10" fill="#93c5fd"/>
+                    <path d="M50 32c6-4 6 4 0 0z" fill="#60a5fa"/>
+                </svg>
+            `,
+            shark: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 34c10-8 30-10 40 0-6-2-10 0-16 4-6-4-14-2-24-4z" fill="#94a3b8"/>
+                </svg>
+            `,
+            whale: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="8" y="28" width="48" height="14" rx="6" fill="#60a5fa"/>
+                    <path d="M44 24c-6 0-8-6-20-4" stroke="#ffffff" stroke-width="1"/>
+                </svg>
+            `,
+            dolphin: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 36c10-8 28-10 36-4-6-2-10 2-16 6-6 3-10 4-20-2z" fill="#60a5fa"/>
+                </svg>
+            `,
+            frog: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="34" r="12" fill="#86efac"/>
+                    <circle cx="26" cy="28" r="2" fill="#073b4c"/>
+                    <circle cx="38" cy="28" r="2" fill="#073b4c"/>
+                </svg>
+            `,
+            crocodile: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="6" y="28" width="44" height="12" rx="4" fill="#a3e635"/>
+                    <path d="M46 30c6 0 8 6 12 8" stroke="#4d7c0f" stroke-width="1.2"/>
+                </svg>
+            `,
+            giraffe: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="28" y="6" width="8" height="28" rx="4" fill="#fcd34d"/>
+                    <circle cx="32" cy="40" r="10" fill="#fef08a"/>
+                </svg>
+            `,
+            rabbit: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="32" cy="36" rx="10" ry="8" fill="#fde68a"/>
+                    <path d="M26 22c0-6 6-10 10-8" stroke="#7c3aed" stroke-width="1.2"/>
+                </svg>
+            `,
+            mouse: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="34" r="8" fill="#e9d5ff"/>
+                    <circle cx="26" cy="28" r="3" fill="#7c3aed"/>
+                </svg>
+            `,
+            jokes: `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="24" r="12" fill="#fde68a" />
+                    <path d="M18 44c8-6 28-6 36 0-8-6-28-6-36 0z" fill="#fca5a5" />
+                </svg>
+            `
+        };
+
+        const animalIconEl = document.getElementById('animalIcon');
+
+        function updateIcon(animal){
+            const svg = icons[animal] || '';
+            animalIconEl.innerHTML = svg;
+            // a tiny pulse when changed
+            animalIconEl.animate([{ transform: 'scale(0.96)' }, { transform: 'scale(1)' }], { duration: 240, easing: 'cubic-bezier(.2,.8,.2,1)' });
         }
+
+        const animalSelect = document.getElementById('animal');
+        const factTextEl = document.getElementById('factText');
+        const factImageEl = document.getElementById('factImage');
+        const showBtn = document.getElementById('showBtn');
+        const toggleLoopBtn = document.getElementById('toggleLoop');
+        const generateBtn = document.getElementById('generateBtn');
+        const exitBtn = document.getElementById('exitBtn');
+        const intervalLabel = document.getElementById('intervalLabel');
+
+        let loopTimer = null;
+        let loopIndex = 0;
+        let loopInterval = 3000; // ms
+
+        function setFact(text, imgHtml){
+            // default image is current animal icon
+            const img = imgHtml || icons[animalSelect.value] || '';
+            // hide before updating for transition
+            factTextEl.classList.remove('show');
+            factImageEl.classList.remove('show');
+            setTimeout(()=>{
+                factTextEl.innerHTML = text;
+                factImageEl.innerHTML = img;
+                // re-add show class to animate in
+                factTextEl.classList.add('show');
+                factImageEl.classList.add('show');
+            }, 60);
+        }
+
+        function getFactsForCurrent(){
+            const animal = animalSelect.value;
+            return factsDb[animal] || [];
+        }
+
+        function displayFact(){
+            const list = getFactsForCurrent();
+            if(!list.length) return setFact('No facts available.');
+            const idx = Math.floor(Math.random() * list.length);
+            setFact(list[idx], icons[animalSelect.value]);
+        }
+
+        // AI-powered fact generator (procedural + templates)
+        const animalTemplates = {
+            cats: ["can", "have", "are", "use", "possess"],
+            dogs: ["can", "have", "are", "develop", "produce"],
+            birds: ["can", "have", "are", "possess", "migrate"],
+            lion: ["can", "have", "are", "roar", "live"],
+            tiger: ["have", "are", "can", "possess", "hunt"],
+            hyena: ["can", "have", "are", "communicate", "live"],
+            elephant: ["can", "have", "are", "remember", "use"],
+            vulture: ["can", "have", "are", "soar", "digest"],
+            eagle: ["can", "have", "are", "spot", "build"],
+            sparrow: ["can", "have", "are", "build", "communicate"],
+            peacock: ["have", "are", "can", "display", "strut"],
+            fish: ["can", "have", "are", "breathe", "live"],
+            shark: ["have", "can", "are", "detect", "swim"],
+            whale: ["are", "have", "can", "migrate", "sing"],
+            dolphin: ["are", "have", "can", "use", "communicate"],
+            frog: ["can", "have", "are", "hop", "croak"],
+            crocodile: ["have", "can", "are", "bite", "swim"],
+            giraffe: ["have", "are", "can", "eat", "reach"],
+            rabbit: ["can", "have", "are", "hop", "run"],
+            mouse: ["can", "have", "are", "squeeze", "hear"]
+        };
+
+        const facts = {
+            cats: ["whiskers", "claws", "purr", "meow", "tail", "eyes", "ears", "teeth", "nose", "skeleton"],
+            dogs: ["bark", "howl", "paws", "tail", "nose", "ears", "fur", "teeth", "sense", "loyalty"],
+            birds: ["wings", "feathers", "beak", "talons", "nest", "song", "migration", "flight", "sight", "wingspan"],
+            lion: ["mane", "roar", "pride", "hunting", "strength", "territory", "claws", "teeth", "speed", "dominance"],
+            tiger: ["stripes", "roar", "swimming", "hunting", "power", "teeth", "claws", "territory", "solitude", "strength"],
+            hyena: ["laugh", "bite", "hunting", "clan", "hierarchy", "jaws", "cooperation", "scavenging", "communication", "intelligence"],
+            elephant: ["trunk", "tusk", "memory", "size", "intelligence", "communication", "family", "emotion", "weight", "lifespan"],
+            vulture: ["eyesight", "thermals", "flight", "digestion", "scavenging", "cooperation", "soaring", "migration", "efficiency", "teamwork"],
+            eagle: ["eyesight", "talons", "nest", "speed", "hunting", "power", "flight", "strength", "longevity", "superiority"],
+            sparrow: ["song", "nest", "flock", "diet", "social", "adaptation", "heartbeat", "territory", "communication", "size"],
+            peacock: ["tail", "display", "feathers", "strut", "mating", "color", "beauty", "movement", "weight", "pride"],
+            fish: ["gills", "scales", "fins", "water", "spawning", "schooling", "adaptation", "color", "species", "behavior"],
+            shark: ["teeth", "bite", "speed", "predator", "ancient", "detection", "swim", "skeleton", "hunting", "lifespan"],
+            whale: ["size", "migration", "song", "diving", "breathing", "heart", "mammal", "intelligence", "family", "communication"],
+            dolphin: ["echolocation", "intelligence", "social", "communication", "swimming", "hunting", "play", "cooperation", "empathy", "family"],
+            frog: ["croak", "jump", "tadpole", "leap", "toxin", "skin", "habitat", "water", "metamorphosis", "defense"],
+            crocodile: ["bite", "ancient", "underwater", "predator", "teeth", "power", "hunting", "nesting", "patience", "strength"],
+            giraffe: ["neck", "height", "spots", "tongue", "eating", "acacia", "patterns", "beauty", "uniqueness", "reach"],
+            rabbit: ["ears", "hop", "speed", "warren", "teeth", "cotton", "vision", "hearing", "agility", "instinct"],
+            mouse: ["whiskers", "hearing", "squeaking", "adaptation", "reproduction", "size", "hole", "nocturnal", "speed", "intelligence"]
+        };
+
+        const actions = ["can detect", "possesses", "exhibits", "uses", "develops", "demonstrates", "produces", "has evolved", "displays"];
+
+        function generateAIFact(){
+            const animal = animalSelect.value;
+            if(animal === 'jokes') {
+                displayFact();
+                return;
+            }
+            const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+            const factType = facts[animal] ? facts[animal][Math.floor(Math.random() * facts[animal].length)] : "abilities";
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            const number = Math.floor(Math.random() * 100) + 1;
+            
+            const templates = [
+                `${animalName}s ${action} ${factType} that ${Math.random() > 0.5 ? 'helps them survive' : 'makes them unique'}.`,
+                `A ${animal}'s ${factType} ${Math.random() > 0.5 ? 'is one of nature\'s most remarkable features' : 'serves a critical evolutionary purpose'}.`,
+                `${animalName}s use their ${factType} to ${Math.random() > 0.5 ? 'communicate with each other' : 'navigate their environment'}.`,
+                `The ${factType} of a ${animal} allows them to ${Math.random() > 0.5 ? 'hunt effectively' : 'adapt to their habitat'}.`,
+                `Scientists have discovered that ${animal}s' ${factType} ${Math.random() > 0.5 ? 'evolved over millions of years' : 'is surprisingly complex'}.`,
+                `${animalName}s ${Math.random() > 0.5 ? 'rely heavily on' : 'have remarkable control over'} their ${factType}.`,
+                `A fascinating aspect of ${animal}s is how they utilize their ${factType} for survival.`,
+                `${animalName}s possess an extraordinary ability to manipulate their ${factType} in ways humans are still studying.`
+            ];
+            
+            const generatedFact = templates[Math.floor(Math.random() * templates.length)];
+            setFact("🤖 AI-Generated: " + generatedFact, icons[animal]);
+            stopLoop();
+        }
+
+
+        // update icon when the selected animal changes
+        animalSelect.addEventListener('change', ()=>{
+            updateIcon(animalSelect.value);
+            // show a hint fact when switching
+            setFact('Switched to ' + animalSelect.value + '. Click Show or Start Loop.');
+            stopLoop();
+        });
+
+        function startLoop(){
+            stopLoop();
+            const list = getFactsForCurrent();
+            if(!list.length) return;
+            // start at a random offset for variety
+            loopIndex = Math.floor(Math.random() * list.length);
+            loopTimer = setInterval(()=>{
+                setFact(list[loopIndex], icons[animalSelect.value]);
+                loopIndex = (loopIndex + 1) % list.length;
+            }, loopInterval);
+            toggleLoopBtn.textContent = 'Stop Loop';
+            toggleLoopBtn.dataset.running = '1';
+        }
+
+        function stopLoop(){
+            if(loopTimer){
+                clearInterval(loopTimer);
+                loopTimer = null;
+            }
+            toggleLoopBtn.textContent = 'Start Loop';
+            toggleLoopBtn.dataset.running = '0';
+        }
+
+        function exitApp(){
+            // stop loop and disable controls gracefully
+            stopLoop();
+            showBtn.disabled = true;
+            toggleLoopBtn.disabled = true;
+            animalSelect.disabled = true;
+            exitBtn.disabled = true;
+            setFact('<strong>Goodbye!</strong> Thanks for exploring animal facts.');
+            // attempt to close the window (may be blocked by browser)
+            try{ window.close(); }catch(e){}
+        }
+
+        // Wire up events
+        showBtn.addEventListener('click', ()=>{ displayFact(); stopLoop(); });
+        generateBtn.addEventListener('click', ()=>{ generateAIFact(); stopLoop(); });
+        toggleLoopBtn.addEventListener('click', ()=>{
+            if(toggleLoopBtn.dataset.running === '1') stopLoop(); else startLoop();
+        });
+        exitBtn.addEventListener('click', exitApp);
+
+        // allow changing interval with +/- keys
+        window.addEventListener('keydown',(e)=>{
+            if(e.key === '+' || e.key === '='){ loopInterval = Math.max(1000, loopInterval - 500); intervalLabel.textContent = Math.round(loopInterval/1000); if(loopTimer) startLoop(); }
+            if(e.key === '-' || e.key === '_'){ loopInterval = Math.min(10000, loopInterval + 500); intervalLabel.textContent = Math.round(loopInterval/1000); if(loopTimer) startLoop(); }
+        });
+
+        // initialize
+        intervalLabel.textContent = Math.round(loopInterval/1000);
+        updateIcon(animalSelect.value);
+        // small initial show
+        setTimeout(()=> setFact('Pick an animal and press Start to loop through fun facts.'), 200);
     </script>
 </body>
 </html>
